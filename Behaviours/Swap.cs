@@ -31,10 +31,15 @@ public class Swap : MonoBehaviour {
 
 		GetLightObjects();
 		GetDarkObjects ();
+
+
 	}
 
 	// Use this for initialization
 	void Start () {
+
+		float rand = Random.Range (0, 2);
+		print (rand);
 
 		disableColliders (darkObjects);
 		swapEffect = GetComponent<SwapEffect> ();
