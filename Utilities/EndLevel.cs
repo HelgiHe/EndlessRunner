@@ -15,16 +15,16 @@ public class EndLevel : MonoBehaviour {
 
 	public GameObject endParticles;
 
-	GameObject levelManagerObject;
-	LevelManager levelManager;
+	//GameObject levelManagerObject;
+
 
 	public Transform particlePos;
 
 	// Use this for initialization
 	void Awake () {
 
-		levelManagerObject = GameObject.Find ("LevelManager");
-		levelManager = levelManagerObject.GetComponent<LevelManager> ();
+		//levelManagerObject = GameObject.Find ("LevelManager");
+		//levelManager = levelManagerObject.GetComponent<LevelManager> ();
 
 	}
 

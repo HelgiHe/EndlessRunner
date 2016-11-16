@@ -14,12 +14,11 @@ public class Swap : MonoBehaviour {
 	Material matTex;
 
 	//Parent objects of dark and light objects
-	public GameObject darkObjectsParent;
-	public GameObject lightObjectsParent;
+	public GameObject objectsParent;
 
 	//List of the objects
-	public List<GameObject> darkObjects;
-	public List<GameObject> lightObjects;
+	public List<GameObject> Objects;
+
 
 	//true on dark platforms
 	public bool isLightDimension = true;
@@ -29,19 +28,15 @@ public class Swap : MonoBehaviour {
 
 	void Awake () {
 
-		GetLightObjects();
-		GetDarkObjects ();
-
-
+		GetObjects ();
 	}
 
 	// Use this for initialization
 	void Start () {
 
-		float rand = Random.Range (0, 2);
-		print (rand);
+		
+		swapMaterial ();
 
-		disableColliders (darkObjects);
 		swapEffect = GetComponent<SwapEffect> ();
 	}
 
@@ -69,33 +64,19 @@ public class Swap : MonoBehaviour {
 		}
 	}
 
-	void GetLightObjects() {
-		
-		//Býr til array af gameObectum sem eru child af lightobjectsParent
-		Transform [] lightObj = lightObjectsParent.GetComponentsInChildren<Transform>();
 
-		lightObjects = new List<GameObject>(); //listinn sem er notaður
 
-		foreach (Transform lightObject in lightObj) {
+	void GetObjects() {
 
-			//bætir við child hlutunum í lightObjects Listann
-			if (lightObject != null && lightObject != lightObj[0]) {
-				lightObjects.Add(lightObject.gameObject);
-			}
-		}
-	}
+		Transform [] DarkObj = objectsParent.GetComponentsInChildren<Transform>();
 
-	void GetDarkObjects() {
-
-		Transform [] DarkObj = darkObjectsParent.GetComponentsInChildren<Transform>();
-
-		darkObjects = new List<GameObject>(); //listinn sem er notaður
+		Objects = new List<GameObject>(); //listinn sem er notaður
 
 		foreach (Transform darkObject in DarkObj) {
 
 			//bætir við child hlutunum í dark Listann
 			if (darkObject != null && darkObject != DarkObj[0]) {
-				darkObjects.Add(darkObject.gameObject);
+				Objects.Add(darkObject.gameObject);
 
 			}
 		}
@@ -109,8 +90,22 @@ public class Swap : MonoBehaviour {
 			OnSwap ();
 		}
 
+
+
 		//function swaps the material on All platform excep the first one
-		foreach (GameObject darkObj in darkObjects) {
+		foreach (GameObject darkObj in Objects) {
+
+			//creating random dimension
+			int rand = (int)Random.Range (0, 2);
+
+			switch (rand) {
+			case 0:
+				isLightDimension = true;
+				break;
+			case 1:
+				isLightDimension = false;
+				break;
+			}
 
 			//Getting the object ready
 			Renderer materialRenderer;
@@ -135,34 +130,6 @@ public class Swap : MonoBehaviour {
 
 			//	col.enabled = true;
 				col.isTrigger = false;
-			}
-		}
-
-	
-		foreach (GameObject lightObj in lightObjects) {
-		
-			//Getting the object ready for material switch
-			Renderer materialRenderer;
-			materialRenderer = lightObj.GetComponent<Renderer>();
-
-			//swaps the status of the object
-			Status status = lightObj.GetComponent<Status>();
-			status.isSelected = !status.isSelected;
-
-			//Getting the Colliders
-			Collider col;
-			col = lightObj.GetComponent<Collider> ();
-
-			if (!isLightDimension) {
-				materialRenderer.material = matTex;
-			
-				//col.enabled = true;
-				col.isTrigger = false;
-
-			} else {
-				materialRenderer.material = matGlass;
-				//col.enabled = false;
-				col.isTrigger = true;
 			}
 		}
 	}

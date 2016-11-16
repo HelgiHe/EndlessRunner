@@ -41,11 +41,13 @@ public class UserInputHandler : MonoBehaviour {
 
 				if (touch.phase == TouchPhase.Began) { //phases er svipað  og getmousrbuttonDown og -up og músarklikkki
 					//holdtime += Time.deltaTime;
-
+					print("jump");
 					if (OnTap != null && touch.position.x > Screen.width / 2) {
+						
 						OnTap (touch);
 
 					} else if (OnLeftTap != null && touch.position.x <= Screen.width / 2) {
+						
 						OnLeftTap ();
 					}
 				} else if (touch.phase == TouchPhase.Stationary && touch.position.x > Screen.width / 2) { //eftir Began phase-inu
