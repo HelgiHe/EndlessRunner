@@ -5,49 +5,30 @@ using System.Collections;
 
 public class PlayerManger : MonoBehaviour {
 
+
+	public delegate void Death(MoreMountains.InfiniteRunnerEngine.PlayableCharacter playa);
+	public static event Death OnDeath; 
+
 	//reffa í components
 	private InputState inputState;
 	private Walk walkBehavior;
 	private Animator animator;
-	private CollisionState collisionState; //ref í collisionState-ið
-	private LongJump jumpState;
 
+	public MoreMountains.InfiniteRunnerEngine.PlayableCharacter player;
 
 	void Awake(){
 
 		inputState = GetComponent<InputState> ();
 		walkBehavior = GetComponent<Walk> ();
 		animator = GetComponent<Animator> ();
-		collisionState = GetComponent<CollisionState> ();
-		jumpState = GetComponent<LongJump> ();
 	}
 
-	// Use this for initialization
 	void Start () {
 
 	}
 		
-
 	// Update is called once per frame
 	void Update () {
-
-
-		if (collisionState.standing) { //tjékkar og athugar hvort player-inn sé grounded
-			ChangeAnimationState(0);
-		}
-
-		if (inputState.absVelX > 0 && collisionState.standing) { // ef það er meira en 0 spila walk animation-ið
-			ChangeAnimationState(1);
-		}
-
-		if (inputState.absVelY > 0 && !collisionState.standing) {
-			ChangeAnimationState(2);
-		}
-
-		if (!collisionState.standing && jumpState.jumpsRemaining < 1) {
-			ChangeAnimationState (3);
-		}
-
 
 		animator.speed = walkBehavior.running ? walkBehavior.runMultiplier : 1;
  
@@ -56,5 +37,20 @@ public class PlayerManger : MonoBehaviour {
 	void ChangeAnimationState(int value){
 		animator.SetInteger ("AnimState", value);
 	}
+
+	void OnTriggerEnter(Collider other) {
+		if(other.CompareTag("Solid")) {
+			
+			StartCoroutine (KillPlaya (0.05f));
+
+		}
+	}
+
+	public IEnumerator KillPlaya(float waitTime) {
+		yield return new WaitForSeconds (waitTime);
+		if(OnDeath != null) {
+			OnDeath (player);
+		}
+	} 
 }
 

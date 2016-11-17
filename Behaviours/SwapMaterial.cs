@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 public class SwapMaterial : MonoBehaviour {
 
+	public MoreMountains.InfiniteRunnerEngine.PlayableCharacter player;
+
+	//Difficulty
+	public GameObject lvlManager;
+	MoreMountains.InfiniteRunnerEngine.LevelManager manager;
+	public float timeSinceStart;
+
 	//material refs
 	Renderer rend;
 	[SerializeField]
@@ -37,7 +44,13 @@ public class SwapMaterial : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		timeSinceStart += Time.deltaTime;
 
+		//refraction should not be less than 0.4
+
+		if (timeSinceStart > 10f) {
+			
+		}
 	}
 
 	//swap the material and the the diemension boolean
