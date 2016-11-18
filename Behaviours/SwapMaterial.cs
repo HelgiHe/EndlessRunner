@@ -11,7 +11,23 @@ public class SwapMaterial : MonoBehaviour {
 	MoreMountains.InfiniteRunnerEngine.LevelManager manager;
 	public float timeSinceStart;
 
+	public float difficultyIncrementOne = 10f;
+	public float difficultyIncrementTwo = 40f;
+	public float difficultyIncrementThree = 60f;
+
+	public float refractionValueOne;
+	public float refractionValueTwo;
+	public float refractionValueThree;
+
+	public float transperancyValueOne;
+	public float transperancyValueTwo;
+	public float transperancyValueThree;
+
+	public float refractionValue = 0.9f;
+	public float transparencyValue = 0.8f;
+
 	//material refs
+
 	Renderer rend;
 	[SerializeField]
 	Material matGlass;
@@ -45,13 +61,30 @@ public class SwapMaterial : MonoBehaviour {
 	void Update () {
 
 		timeSinceStart += Time.deltaTime;
-
 		//refraction should not be less than 0.4
+	
+		matGlass.SetFloat ("_Refraction", refractionValue);
+		matGlass.SetFloat ("_Transparency", transparencyValue);
 
-		if (timeSinceStart > 10f) {
-			
-		}
+		setDifficulty ();
 	}
+
+	void setDifficulty () {
+
+		if (timeSinceStart > difficultyIncrementOne && timeSinceStart < difficultyIncrementTwo) {
+
+			refractionValue = refractionValueOne;
+			transparencyValue = transperancyValueOne;
+
+		} else if (timeSinceStart > difficultyIncrementTwo && timeSinceStart < difficultyIncrementThree) {
+			refractionValue = refractionValueTwo;
+			transparencyValue = transperancyValueTwo;
+		} else if (timeSinceStart > difficultyIncrementThree) {
+			refractionValue = refractionValueThree;
+			transparencyValue = transperancyValueThree;
+		} 
+	}
+
 
 	//swap the material and the the diemension boolean
 	public void SwapDimensions () {
