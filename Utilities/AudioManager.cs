@@ -5,27 +5,26 @@ using System.Collections;
 
 public class AudioManager : MonoBehaviour {
 
-
 	public AudioClip bkgSound;
+	public AudioClip loseSound;
 	AudioSource audio;
 
 	// Use this for initialization
 	void Awake () {
-	
-		audio = GetComponent<AudioSource> ();
-		audio.enabled = false;
+		audio = gameObject.GetComponent<AudioSource> ();
+		audio.clip = bkgSound;
 	}
 
-	void Start () {
-		StartCoroutine(PlaySound(0.2f));
-	}
-	
-	IEnumerator PlaySound(float waitTime) {
-
-		yield return new WaitForSeconds (waitTime);
-		audio.enabled = true;
-		audio.PlayOneShot (bkgSound);
+	void OnEnable () {
+		PlayerManger.OnPlayerDied += playLoseSound;
 	}
 
+	void OnDisable () {
+		PlayerManger.OnPlayerDied -= playLoseSound;
+	}
 
+	public void playLoseSound () {
+		audio.Stop ();
+		audio.PlayOneShot (loseSound);
+	}
 }

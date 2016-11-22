@@ -8,6 +8,7 @@ public class Jump : AbstractBehavior {
 	public float holdJumpSpeed = 2f;
 	public float jumpDelay = .1f; //tími á milli hoppa
 	public int jumpCount = 2; //hversu oft er hægt að hoppa
+	public bool isJumping;
 
 	public float maxJumpTime = 0.2f;
 	public float holdTime;
@@ -64,9 +65,10 @@ public class Jump : AbstractBehavior {
 			//maintain-ar x.velocity-inu en bætir við jumpSpeed á Y-ásnum
 			body.velocity = new Vector2 (vel.x, jumpSpeed);
 			jumpsRemaining -= 1;
+			isJumping = true;
 
-			canLongJump = true;
 		}
+	
 	}
 
 	public void isHolding(float hTime){
@@ -81,14 +83,4 @@ public class Jump : AbstractBehavior {
 		holding = false;
 		holdTime = 0f;
 	}
-
-	/*IEnumerator increaseHeight(float holdTime) {
-		var vel = body.velocity;
-		while (holdTime < maxJumpTime) {
-			body.velocity = new Vector2 (vel.x, holdJumpSpeed += holdTime * Time.deltaTime);
-			print (holdTime);
-			yield return null;
-		}
-
-	}*/
 }
