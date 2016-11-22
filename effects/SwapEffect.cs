@@ -17,12 +17,12 @@ public class SwapEffect : MonoBehaviour {
 
 	public void OnEnable (){
 		MoreMountains.InfiniteRunnerEngine.LevelManager.OnPlayerDeath += PlayWiggleEffect;
-		Swap.OnSwap += PlayGlitchEffect;
+		UserInputHandler.OnLeftTap += PlayGlitchEffect;
 	}
 
 	public void OnDisable () {
-		MoreMountains.InfiniteRunnerEngine.LevelManager.OnPlayerDeath += PlayWiggleEffect;
-		Swap.OnSwap -= PlayGlitchEffect;
+		MoreMountains.InfiniteRunnerEngine.LevelManager.OnPlayerDeath -= PlayWiggleEffect;
+		UserInputHandler.OnLeftTap -= PlayGlitchEffect;
 	}
 
 
