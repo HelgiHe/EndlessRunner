@@ -21,6 +21,13 @@ public class SwapMaterial : MonoBehaviour {
 	public float refractionValue = 0.9f;
 	public float transparencyValue = 0.8f;
 
+	public float maxGapXOne = 23f;
+	public float maxGapYOne = 6f;
+	public float maxGapXTwo = 26f;
+	public float maxGapYTwo = 6.5f;
+	public float maxGapXThree = 30f;
+	public float maxGapYThree = 7f;
+
 	//material refs
 
 	Renderer rend;
@@ -73,14 +80,19 @@ public class SwapMaterial : MonoBehaviour {
 	void setDifficulty () {
 
 		if (timeSinceStart > difficultyIncrementOne && timeSinceStart < difficultyIncrementTwo) {
-
+			spawner.MaximumGap.x = maxGapXOne;
+			spawner.MaximumGap.y = maxGapYOne;
 			refractionValue = refractionValueOne;
 			transparencyValue = transperancyValueOne;
 
 		} else if (timeSinceStart > difficultyIncrementTwo && timeSinceStart < difficultyIncrementThree) {
+			spawner.MaximumGap.x = maxGapXTwo;
+			spawner.MaximumGap.y = maxGapYTwo;
 			refractionValue = refractionValueTwo;
 			transparencyValue = transperancyValueTwo;
 		} else if (timeSinceStart > difficultyIncrementThree) {
+			spawner.MaximumGap.x = maxGapXThree;
+			spawner.MaximumGap.y = maxGapYThree;
 			refractionValue = refractionValueThree;
 			transparencyValue = transperancyValueThree;
 		} 

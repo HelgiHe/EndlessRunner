@@ -4,6 +4,7 @@ using System.Collections;
 public class Jump : AbstractBehavior {
 
 	public float jumpSpeed = 200f;
+	public float longJumpSpeed = 8f;
 	public float holdJumpSpeed = 2f;
 	public float jumpDelay = .1f; //tími á milli hoppa
 	public int jumpCount = 2; //hversu oft er hægt að hoppa
@@ -11,6 +12,7 @@ public class Jump : AbstractBehavior {
 	public float maxJumpTime = 0.2f;
 	public float holdTime;
 	public bool starCounting;
+	public bool holding;
 
 	protected float lastJumpTime = 0;
 	public int jumpsRemaining = 0;
@@ -21,12 +23,14 @@ public class Jump : AbstractBehavior {
 	protected virtual void OnEnable ()
 	{
 		UserInputHandler.OnRightTap += OnJump;
-		//UserInputHandler.OnHold += isHolding;
+		UserInputHandler.OnHold += isHolding;
+		UserInputHandler.OnRelease += resetCounting;
 	}
 
 	protected virtual void OnDisable () {
 		UserInputHandler.OnRightTap -= OnJump;
-		//UserInputHandler.OnHold -= isHolding;
+		UserInputHandler.OnHold -= isHolding;
+		UserInputHandler.OnRelease -= resetCounting;
 	}
 
 	protected virtual void Start () {
@@ -40,12 +44,19 @@ public class Jump : AbstractBehavior {
 		if (starCounting) {
 			holdTime += Time.deltaTime;
 		}
+
+		//if the player is holding the jump button it will jump longer
+		if (holding && holdTime < maxJumpTime && jumpsRemaining > 0) {
+			var vel = body.velocity;
+			body.velocity = new Vector2 (vel.x, longJumpSpeed);
+		}
 			
 	}
 	//initial jump Speed
 	protected virtual void OnJump(){
 
-		if (collisionState.standing || !collisionState.standing && jumpsRemaining > 0) {
+		starCounting = true;
+		if (collisionState.standing || !collisionState.standing  && jumpsRemaining > 0) {
 
 			var vel = body.velocity; 
 			//lastJumpTime = Time.time;//óþarfi að nota delta í þessu tilfelli
@@ -60,15 +71,18 @@ public class Jump : AbstractBehavior {
 
 	public void isHolding(float hTime){
 	 
-		StartCoroutine (increaseHeight (hTime));
+		//StartCoroutine (increaseHeight (hTime));
+		holding = true;
 	}
 
+	//resets the counters on releasr
 	public void resetCounting() {
 		starCounting = false;
+		holding = false;
 		holdTime = 0f;
 	}
 
-	IEnumerator increaseHeight(float holdTime) {
+	/*IEnumerator increaseHeight(float holdTime) {
 		var vel = body.velocity;
 		while (holdTime < maxJumpTime) {
 			body.velocity = new Vector2 (vel.x, holdJumpSpeed += holdTime * Time.deltaTime);
@@ -76,5 +90,5 @@ public class Jump : AbstractBehavior {
 			yield return null;
 		}
 
-	}
+	}*/
 }

@@ -41,43 +41,5 @@ public class CollisionState : MonoBehaviour {
 			standing = false;
 		}
 	}
-	
 
-	void FixedUpdate(){
-
-
-		/*
-		var pos = bottomPosition;
-		pos.x += transform.position.x;
-		pos.y += transform.position.y;
-
-
-		pos = inputState.direction == Directions.Right ? rightPosition : leftPosition; //returnar bool
-		pos.x += transform.position.x;
-		pos.y += transform.position.y;
-
-		onWall = Physics.OverlapSphere (pos, collisionRadius, collisionLayer);
-		*/
-	}
-
-
-	/*
-	void OnDrawGizmos(){ // sést bara í Editonum
-
-		Gizmos.color = debugCollisionColor;
-
-		//array af position-s
-		var positions = new Vector2[] {rightPosition, bottomPosition, leftPosition};
-
-		foreach (var position in positions) {
-			//teiknar hring þar sem collisionRadius-i er
-			var pos = position;
-			pos.x += transform.position.x;
-			pos.y += transform.position.y;
-
-
-			Gizmos.DrawWireSphere (pos, collisionRadius);
-		}
-	}
-	*/
 }
