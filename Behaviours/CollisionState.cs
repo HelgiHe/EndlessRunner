@@ -17,29 +17,26 @@ public class CollisionState : MonoBehaviour {
 	private SphereCollider sphereCol;
 
 	private InputState inputState;
-	private LongJump jump;
+	private Jump jump;
 
 	// Use this for initialization
 	void Awake () {
 		inputState = GetComponent<InputState> ();
 		sphereCol = GetComponent<SphereCollider> ();
-		jump = GetComponent<LongJump> ();
+		jump = GetComponent<Jump> ();
 	}
+		
 
-	// Update is called once per frame
-	void Update () {
-
-	}
-
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter(Collision other) {
+		
 		if(other.gameObject.CompareTag("Solid")) {
 			standing = true;
 			jump.jumpsRemaining = jump.jumpCount;
-			jump.increaseHeight = true;
+
 		}
 	}
 
-	void OnTriggerExit(Collider other) {
+	void OnCollisionExit(Collision other) {
 		if(other.gameObject.CompareTag("Solid")) {
 			standing = false;
 		}

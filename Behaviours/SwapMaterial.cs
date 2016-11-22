@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class SwapMaterial : MonoBehaviour {
 
-	public MoreMountains.InfiniteRunnerEngine.PlayableCharacter player;
-
-	//Difficulty
-	public GameObject lvlManager;
-	MoreMountains.InfiniteRunnerEngine.LevelManager manager;
 	public float timeSinceStart;
 
 	public float difficultyIncrementOne = 10f;
@@ -38,16 +33,21 @@ public class SwapMaterial : MonoBehaviour {
 	public GameObject platformSpawner;
 	List<GameObject> objectsInPool;
 	MoreMountains.Tools.SimpleObjectPooler simpleObjectPooler;
+	MoreMountains.InfiniteRunnerEngine.DistanceSpawner spawner;
 
 	void OnEnable () {
 		MoreMountains.InfiniteRunnerEngine.DistanceSpawner.OnSpawn += ApplyRandomMaterial;
+		UserInputHandler.OnLeftTap += SwapDimensions;
 	}
 
 	void OnDisable () {
 		MoreMountains.InfiniteRunnerEngine.DistanceSpawner.OnSpawn += ApplyRandomMaterial;
+		UserInputHandler.OnLeftTap -= SwapDimensions;
 	}
-
+		
 	void Start () {
+		//spawner variable will enable changes between platforms and their size
+		spawner = platformSpawner.GetComponent<MoreMountains.InfiniteRunnerEngine.DistanceSpawner> ();
 
 		simpleObjectPooler = platformSpawner.GetComponent<MoreMountains.Tools.SimpleObjectPooler> ();
 		objectsInPool = simpleObjectPooler._pooledGameObjects;
@@ -67,6 +67,7 @@ public class SwapMaterial : MonoBehaviour {
 		matGlass.SetFloat ("_Transparency", transparencyValue);
 
 		setDifficulty ();
+
 	}
 
 	void setDifficulty () {

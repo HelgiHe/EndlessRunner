@@ -3,10 +3,10 @@ using System.Collections;
 
 public class UserInputHandler : MonoBehaviour {
 
-	public delegate void TapAction(Touch t); //delgate is a reference to a method
-	public static event TapAction OnTap; //Event is method sent to other objects mep onenable() og ondisable
+	public delegate void TapAction(); //delgate is a reference to a method
+	public static event TapAction OnRightTap; //Event is method sent to other objects mep onenable() og ondisable
 
-	public delegate void HoldAction(Touch t, float hTime); 
+	public delegate void HoldAction(float hTime); 
 	public static event HoldAction OnHold;
 
 	public delegate void ReleaseAction();
@@ -15,14 +15,8 @@ public class UserInputHandler : MonoBehaviour {
 	public delegate void LeftTap();
 	public static event LeftTap OnLeftTap;
 
-	/*
-	public float tapMaxMovement = 50f; //maximum a touch can be moved to be considered a tap
 
-	private Vector2 movement; //how far we have moved
-
-	private bool tapGestureFailed = false; // ef user-inn færir puttann of langt
-*/
-
+	public bool startCounting;
 	public float holdtime;
 
 	// Use this for initialization
@@ -33,6 +27,7 @@ public class UserInputHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+
 		if (Input.touchCount > 0) {
 
 			foreach (Touch touch in Input.touches) {
@@ -41,25 +36,25 @@ public class UserInputHandler : MonoBehaviour {
 
 				if (touch.phase == TouchPhase.Began) { //phases er svipað  og getmousrbuttonDown og -up og músarklikkki
 					//holdtime += Time.deltaTime;
-					print("jump");
-					if (OnTap != null && touch.position.x > Screen.width / 2) {
-						
-						OnTap (touch);
+
+					if (OnRightTap != null && touch.position.x > Screen.width / 2) {
+						startCounting = true;
+						OnRightTap ();
 
 					} else if (OnLeftTap != null && touch.position.x <= Screen.width / 2) {
-						
-						OnLeftTap ();
-					}
-				} else if (touch.phase == TouchPhase.Stationary && touch.position.x > Screen.width / 2) { //eftir Began phase-inu
-					//should longJump
+						if (OnLeftTap != null) {
+							OnLeftTap ();
+						}
+					} 
+				} else if (touch.phase == TouchPhase.Stationary && touch.position.x > Screen.width / 2) {
 					holdtime += Time.deltaTime;
-			
 					if (OnHold != null) {
-						OnHold (touch, holdtime);
+						OnHold (holdtime);
 					}
-
-				} else if (touch.phase == TouchPhase.Ended && touch.position.x > Screen.width / 2) {
-
+				}
+					
+				else if (touch.phase == TouchPhase.Ended && touch.position.x > Screen.width / 2) {
+	
 					holdtime = 0;
 
 					if (OnRelease != null) {
@@ -69,19 +64,7 @@ public class UserInputHandler : MonoBehaviour {
 
 			}
 		}
-			//else
-			
-				/*if (!tapGestureFailed)
-				{
-					if (OnTap != null)  //er null ef engin önnur script hafa register-að
-						OnTap(touch); // sendit event-ið með current-tpuch sem parameter
-					
-				}
-
-				tapGestureFailed = false; 
-				*/
-			
-		}
+	}
 }
 
 

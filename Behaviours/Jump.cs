@@ -4,9 +4,13 @@ using System.Collections;
 public class Jump : AbstractBehavior {
 
 	public float jumpSpeed = 200f;
+	public float holdJumpSpeed = 2f;
 	public float jumpDelay = .1f; //tími á milli hoppa
 	public int jumpCount = 2; //hversu oft er hægt að hoppa
 
+	public float maxJumpTime = 0.2f;
+	public float holdTime;
+	public bool starCounting;
 
 	protected float lastJumpTime = 0;
 	public int jumpsRemaining = 0;
@@ -16,11 +20,13 @@ public class Jump : AbstractBehavior {
 	// Use this for initialization
 	protected virtual void OnEnable ()
 	{
-		UserInputHandler.OnTap += OnJump;
+		UserInputHandler.OnRightTap += OnJump;
+		//UserInputHandler.OnHold += isHolding;
 	}
 
 	protected virtual void OnDisable () {
-		UserInputHandler.OnTap -= OnJump;
+		UserInputHandler.OnRightTap -= OnJump;
+		//UserInputHandler.OnHold -= isHolding;
 	}
 
 	protected virtual void Start () {
@@ -31,17 +37,18 @@ public class Jump : AbstractBehavior {
 	// Update is called once per frame
 	protected virtual void Update () {
 
-		//var canJump = inputState.GetButtonValue (inputButtons [0]); //sækir takkan út unputButtonArray-inu
-		//var holdTime = inputState.GetButtonHoldTime (inputButtons [0]);
+		if (starCounting) {
+			holdTime += Time.deltaTime;
+		}
 			
 	}
-
-	protected virtual void OnJump(Touch t){
+	//initial jump Speed
+	protected virtual void OnJump(){
 
 		if (collisionState.standing || !collisionState.standing && jumpsRemaining > 0) {
 
 			var vel = body.velocity; 
-			lastJumpTime = Time.time;//óþarfi að nota delta í þessu tilfelli
+			//lastJumpTime = Time.time;//óþarfi að nota delta í þessu tilfelli
 
 			//maintain-ar x.velocity-inu en bætir við jumpSpeed á Y-ásnum
 			body.velocity = new Vector2 (vel.x, jumpSpeed);
@@ -49,5 +56,25 @@ public class Jump : AbstractBehavior {
 
 			canLongJump = true;
 		}
+	}
+
+	public void isHolding(float hTime){
+	 
+		StartCoroutine (increaseHeight (hTime));
+	}
+
+	public void resetCounting() {
+		starCounting = false;
+		holdTime = 0f;
+	}
+
+	IEnumerator increaseHeight(float holdTime) {
+		var vel = body.velocity;
+		while (holdTime < maxJumpTime) {
+			body.velocity = new Vector2 (vel.x, holdJumpSpeed += holdTime * Time.deltaTime);
+			print (holdTime);
+			yield return null;
+		}
+
 	}
 }
