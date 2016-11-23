@@ -13,14 +13,17 @@ public class AudioManager : MonoBehaviour {
 	void Awake () {
 		audio = gameObject.GetComponent<AudioSource> ();
 		audio.clip = bkgSound;
+		audio.Play ();
 	}
 
 	void OnEnable () {
 		PlayerManger.OnPlayerDied += playLoseSound;
+		MoreMountains.InfiniteRunnerEngine.LevelManager.OnPlayerDeath += playLoseSound;
 	}
 
 	void OnDisable () {
 		PlayerManger.OnPlayerDied -= playLoseSound;
+		MoreMountains.InfiniteRunnerEngine.LevelManager.OnPlayerDeath -= playLoseSound;
 	}
 
 	public void playLoseSound () {

@@ -31,9 +31,7 @@ public class PlayerManger : MonoBehaviour {
 		sound = GetComponent<AudioSource> ();
 	}
 
-	void Start () {
-		
-	}
+
 		
 	// Update is called once per frame
 	void Update () {
