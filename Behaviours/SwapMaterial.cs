@@ -115,9 +115,7 @@ public class SwapMaterial : MonoBehaviour {
 				rend.material = matTex;
 				col.isTrigger = false;
 			}
-		
 		}
-
 	}
 	//create a random number and assign the boolean and material
 	public void ApplyRandomMaterial(GameObject obj) {

@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour {
 	AudioSource audio;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		audio = gameObject.GetComponent<AudioSource> ();
 		audio.clip = bkgSound;
 		audio.Play ();
