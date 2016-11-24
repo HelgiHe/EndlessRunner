@@ -64,7 +64,7 @@ public class PlayerManger : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if(other.CompareTag("Solid")) {
 			
-			StartCoroutine (KillPlaya (0.05f));
+			StartCoroutine (KillPlaya (0.03f));
 
 		}
 	}
