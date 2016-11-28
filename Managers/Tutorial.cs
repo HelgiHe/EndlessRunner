@@ -65,13 +65,14 @@ public class Tutorial : MonoBehaviour {
 				instrucitonTxt.text = "You can also double jump";
 			} else if (timer > fourthPart && timer < fifithPart) {
 				swap.enabled = true;
-				instrucitonTxt.text = "When a platform is semi-transparent, you need to \"Swap\" by tapping the left side of the screen";
+				instrucitonTxt.text = "When a platform is semi-transparent, \"Swap\" by tapping the left side of the screen";
 				mobileIcon.enabled = true;
 				touchLeft.enabled = true;
 				StartCoroutine (SlowTime (3f));
 			} else if (timer < firstPart) {
 				instrucitonTxt.text = "";
 			} else {
+				fadeImg.enabled = true;
 				mobileIcon.enabled = false;
 				touchLeft.enabled = false;
 				instrucitonTxt.text = "Good job, have fun";
@@ -83,7 +84,6 @@ public class Tutorial : MonoBehaviour {
 		//fade to black smoothly
 		if(fade)
 		{
-			fadeImg.enabled = true;
 			fadeImg.color = Color.Lerp(fadeImg.color, Color.black, fadeSpeed * Time.deltaTime);
 		}
 
@@ -92,6 +92,9 @@ public class Tutorial : MonoBehaviour {
 	void stopText () {
 		gameIsRunning = false;
 		instrucitonTxt.text = "";
+		mobileIcon.enabled = false;
+		touchRight.enabled = false;
+		touchLeft.enabled = false;
 	}
 
 	IEnumerator SlowTime(float waitTime) {
