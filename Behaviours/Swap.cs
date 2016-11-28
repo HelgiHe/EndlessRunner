@@ -14,10 +14,13 @@ public class Swap : MonoBehaviour {
 	Renderer rend;
 	Collider col;
 
+	Tutorial tutorial;
+
 	// Use this for initialization
 	void Start () {
 		rend = platform.GetComponent<Renderer> ();
 		col = platform.GetComponent<Collider> ();
+		tutorial = GetComponent<Tutorial> ();
 	}
 
 	void OnEnable(){
@@ -36,7 +39,8 @@ public class Swap : MonoBehaviour {
 	}
 		
 	void swapMaterial () {
-		
+
+
 		if (rend.material.name == "matTex (Instance)") {
 			rend.material = matGlass;
 			col.isTrigger = true;
